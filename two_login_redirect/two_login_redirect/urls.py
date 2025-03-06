@@ -1,5 +1,5 @@
 """
-URL configuration for one_start project.
+URL configuration for two_login_redirect project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,11 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web import views
+from demo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login),
-    # 案例1：号码列表
-    path('phone/list/', views.phone_list),
+    path('index/', views.index),
 ]

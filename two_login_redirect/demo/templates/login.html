@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-4.6.2/css/bootstrap.min.css' %}">
+    <style>
+        .login-box {
+            width: 400px;
+            height: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 220px;
+            border: 1px solid #dddddd;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="login-box">
+    <h2>用户登陆</h2>
+    <form method="post" action="/login/">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>用户名</label>
+            <input type="text" class="form-control" placeholder="请输入用户名" name="user">
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            <input type="password" class="form-control" placeholder="请输入密码" name="pwd">
+        </div>
+        <button type="submit" class="btn btn-primary">提交</button>
+        <span style="color: red;">{{ error }}</span>
+    </form>
+</div>
+</body>
+</html>

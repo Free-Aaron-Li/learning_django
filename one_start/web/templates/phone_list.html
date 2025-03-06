@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>号码列表</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-5.3.0/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>号码列表</h1>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>手机号</th>
+            <th>归属地</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in data %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.phone }}</td>
+                <td>{{ row.city }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script src="{% static 'lib/jquery-3.7.1.min.js' %}"></script>
+    <script rel="stylesheet" href="{% static 'lib/bootstrap-5.3.0/js/bootstrap.min.js' %}"></script>
+</div>
+</body>
+</html>
