@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑部门</title>
+    <link rel="stylesheet" href="{% static '/bootstrap-4.6.2/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    编辑部门
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <form method="post" action="/edit/department/?id={{ department_obj.id }}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>部门名称</label>
+                        <input type="text" name="title" placeholder="部门名称" value="{{ department_obj.title }}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>部门人数</label>
+                        <input type="text" name="count" placeholder="部门人数" value="{{ department_obj.count }}"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

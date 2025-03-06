@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加部门</title>
+    <link rel="stylesheet" href="{% static '/bootstrap-4.6.2/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    添加部门
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <form method="post" action="/add/department/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>部门名称</label>
+                        <input type="text" name="title" placeholder="请输入部门名称"/>
+                    </div>
+                    <div class="form-group">
+                        <label>部门人数</label>
+                        <input type="text" name="count" placeholder="请输入部门人数"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
