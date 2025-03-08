@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% comment %}<p>
+            {{ form.title.label }}
+            {{ form.title }}
+            <span style="color:red"> {{ form.title.errors.0 }} </span>
+        </p>
+        <p>
+
+            {{ form.count.label }}
+            {{ form.count }}
+            <span style="color: red">{{ form.count.errors.0 }}</span>
+        </p>{% endcomment %}
+        {% comment %}循环显示{% endcomment %}
+        {% for field in form %}
+            <p>
+                {{ field.label }}
+                {{ field }}
+            </p>
+            <span style="color: red;">
+                {{ field.errors.0 }}
+            </span>
+        {% endfor %}
+        <input type="submit" value="提交">
+    </form>
+{% endblock %}

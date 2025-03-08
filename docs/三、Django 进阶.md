@@ -76,6 +76,8 @@ for row in queryset:
 
 ## 3.5 Form 和 ModelForm
 
+### 3.5.1 Form
+
 Django 中的 Form 组件有 2 个重要作用：
 1. 生成 HTML表单标签
 2. 数据校验
@@ -223,3 +225,59 @@ user = forms.CharField(
     validators=[RegexValidator(r'^[0-9]+$', "请输入数字")]  # 正则表达式
 )
 ```
+
+
+### 3.5.2 ModelForm
+
+```python
+# models.py
+class UserInfo(models.Model):  
+    username = models.CharField(verbose_name="用户名", max_length=32)  
+    password = models.CharField(verbose_name="密码", max_length=64)  
+    age = models.IntegerField(verbose_name="年龄")
+```
+
+```python
+# views.py
+class LoginModelForm(forms.ModelForm):  
+    class Meta:  
+        model = models.UserInfo  
+        # 方式一：  
+        # fields = ['username', 'password']        # 方式二：自动拿去所有字段        fields = '__all__'  
+        widgets = {  
+            "username": forms.TextInput(  
+                attrs={  
+                    'class': 'form-control',  
+                    'placeholder': '请输入用户名',  
+                },  
+            ),  
+            "password": forms.PasswordInput(  
+                attrs={  
+                    'class': 'form-control',  
+                    'placeholder': '请输入密码',},  
+            ),  
+        }
+```
+
+默认显示数据 + 保存数据
+
+```python
+# 保存数据
+obj = LoginModelForm(data=request.POST)
+obj.save() # 省去 models...create(...)
+
+
+# 显示数据
+obj = models.UserInfo.objects.filter(id=1).first()
+obj = LoginModelForm(instance=obj)
+```
+
+## 3.6 总结
+
+单独知识点需要知道是什么？
+- Cookie 和 Session
+- 中间件
+- 母板
+- 连表操作
+- Form
+- ModelForm
