@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block title %}
+    <title>添加角色</title>
+{% endblock %}
+{% block content %}
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <p>{{ form.user }}</p><span style="color: red;">{{ form.user.errors.0 }}</span>
+        <p>{{ form.password }}</p><span style="color: red;">{{ form.password.errors.0 }}</span>
+        <p>{{ form.email }}</p><span style="color: red;">{{ form.email.errors.0 }}</span>
+        <p>{{ form.city }}</p><span style="color: red;">{{ form.city.errors.0 }}</span>
+        <input type="submit" value="提交">
+    </form>
+{% endblock %}

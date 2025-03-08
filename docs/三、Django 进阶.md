@@ -74,3 +74,152 @@ for row in queryset:
 	row.id row.name row.age row.salary row.depart_id row.depart.title # 获取数据通过“.”跨表
 ```
 
+## 3.5 Form 和 ModelForm
+
+Django 中的 Form 组件有 2 个重要作用：
+1. 生成 HTML表单标签
+2. 数据校验
+
+快速上手：
+
+```python
+class MyForm(forms.Form):
+	a1 = ...
+	a2 = ...
+```
+
+在视图函数上：
+
+```python
+def xxx(request):
+	if request.method == 'GET'
+		form = MyForm()
+		return render(request, "xxx.html",{"form":form})
+		
+	# 用户提交数据进行校验
+	form = MyForm(data=request.POST)
+	if form.is_valid(): 
+		print("成功", form.clearned_data) # 提交成功的字典数据
+	else:
+		form.errors # 获取所有的错误信息
+```
+
+在 HTML 页面上：
+
+```html
+<form>
+	{{form.a1}}
+	{{form.a2}}
+	<input type='submit' value=“提交” />
+</form>
+```
+
+**示例**
+ 
+**表单**：
+```python
+class RoleForm(forms.Form):  
+    user = forms.CharField(  
+        max_length=32,  
+        label='用户名',  
+        widget=forms.TextInput(  
+            attrs={"class": "form-control"},  
+        )  
+    )  # 会生成一个input typ="text"标签  
+    password = forms.CharField(  
+        max_length=32,  
+        label='密码',  
+        widget=forms.PasswordInput(  
+            attrs={"class": "form-control"},  
+        ),  # 插件  
+    )  
+    # 方式一：  
+    # email = forms.EmailField(label='邮箱')    email = forms.CharField(  
+        label="邮箱",  
+        # widget=forms.Textarea(), # 多行文本  
+        widget=forms.EmailInput(  
+            attrs={"class": "form-control"},  
+        ),  
+    )  
+    city = forms.ChoiceField(  
+        label='城市',  
+        choices=(  
+            ('bj', '北京'),  
+            ('sh', '上海'),  
+            ('sz', '深圳'),  
+            ('cd', '成都'),  
+        ),  
+        widget=forms.Select(  
+            attrs={"class": "form-control"},  
+        )  
+    )
+```
+
+HTML：
+
+```html
+{% extends 'layout.html' %}  
+{% block title %}  
+    <title>添加角色</title>  
+{% endblock %}  
+{% block content %}  
+    <form>        {{ form.user }}  
+        {{ form.password }}  
+        {{ form.email }}  
+        {{ form.city }}  
+        <input type="submit" value="提交">  
+    </form>  
+{% endblock %}
+```
+
+初始化默认值：
+
+```python
+def add_role(request):  
+    form = RoleForm(  
+        initial={ # 表单初始化必须加上 CSRF TOKEN，否则无法渲染初始化项默认值  
+            "user": "root",  
+            "password": "123456",  
+            "email": "123@qq.com",  
+            "city": "bj",  
+        }  
+    )    return render(request, 'add_role.html', {"form": form})
+```
+
+初步校验：
+
+```python
+# POST请求，对用户提交数据进行校验  
+form = RoleForm(data=request.POST)  
+if form.is_valid():  
+    print("成功", form.cleaned_data)  
+    return HttpResponse("成功")  
+else:  
+    # form.errors 包含了所有的错误信息  
+    print("失败：", form.errors)  
+    return render(request, 'add_role.html', {"form": form})
+```
+
+```html
+<form method="POST" novalidate>  
+    {% csrf_token %}  
+    <p>{{ form.user }}</p><span style="color: red;">{{ form.user.errors.0 }}</span>  
+    <p>{{ form.password }}</p><span style="color: red;">{{ form.password.errors.0 }}</span>  
+    <p>{{ form.email }}</p><span style="color: red;">{{ form.email.errors.0 }}</span>  
+    <p>{{ form.city }}</p><span style="color: red;">{{ form.city.errors.0 }}</span>  
+    <input type="submit" value="提交">  
+</form>
+```
+
+自定义校验：
+
+```python
+user = forms.CharField(  
+    max_length=32,  
+    label='用户名',  
+    widget=forms.TextInput(  
+        attrs={"class": "form-control"},  
+    ),  
+    validators=[RegexValidator(r'^[0-9]+$', "请输入数字")]  # 正则表达式
+)
+```
